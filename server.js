@@ -14,3 +14,13 @@ server.listen(port);
 app.get('/', (req, res) => {
     res.sendFile('index.html');
 });
+
+var playercount = 0;
+io.on('connection', (socket) =>{
+    console.log('client connected');
+    io.sockets.emit('newPlayer', playercount);
+    playercount++;
+    console.log(playercount);
+
+});
+
