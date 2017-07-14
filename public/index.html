@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.querySelector('body').innerHTML+= '<div id="hello"></div>';
+        document.querySelector('#hello').innerHTML+= '<div id="box"></button>';
+        var left = document.querySelector('#box');
+    console.log(left);
+        var hello = document.querySelector('#hello');        
+        var socket= io.connect('http://localhost:3001',(socket)=>{
+            socket.emit('connected','some stuff'); 
+            left.addEventListener('click', ()=>{    
+                console.log('moved right')
+                socket.emit('moveleft');
+            });
+        } );
+        // console.log(hello);
+        left.addEventListener('click', ()=>{
+                console.log('moved left')
+                socket.emit('moveleft');
+            });
+            socket.on('positionL', (position)=>{
+                console.log(`im moving ${position}px`);
+                // console.log(position);
+                document.getElementById('box').style.left =`${position}px`;
+                console.log(document.getElementById('box').style.left);
+            });
+        window.addEventListener('keydown', (e) => {
+            console.log(e.keyCode); 
+            console.log(socket);   
+            console.log('moved left')
+                // alert('hello');
+                 socket.emit('moveleft');
+            });
+    </script>
+</body>
+</html>
