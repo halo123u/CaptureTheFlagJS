@@ -3,17 +3,19 @@ body {
 }
 
 .container{
-height:90vh;
-width: 90vw;
+height:99vh;
+width: 99.5vw;
+position: relative;
 border: 5px solid black;
 }
 .box{
-    width: 50px;
-    height: 50px;
-     position: absolute; 
+    width: 2%;
+    height: 4%;
+      position: absolute;  
     /* left:0; */
-      transition: 500ms;  
+      transition: 1000ms;  
 }
-#box1{
-    left:100px;
+#box2{
+    top:96%;
+    left:0%;
 }

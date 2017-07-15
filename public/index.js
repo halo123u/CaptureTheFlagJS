@@ -12,24 +12,24 @@ socket.on('connect', function(){
         console.log(data);
         ID=data;
     });
-    $(document).ready(function(){
+    // $(document).ready(function(){
     socket.on('user',function(box){
 
         if(box.id==1){
-            box1.style.left= `${box.left}px`;
-            box1.style.top= `${box.top}px`;
+            box1.style.left= `${box.left}%`;
+            box1.style.top= `${box.top}%`;
         } else if(box.id==2){
-            box2.style.left= `${box.left}px`;
-            box2.style.top= `${box.top}px`;
+            box2.style.left= `${box.left}%`;
+            box2.style.top= `${box.top}%`;
         }
-    });
+    // });
     socket.on('render',function(box){
          if(box.id==1){
-            box1.style.left= `${box.left}px`;
-            box1.style.top= `${box.top}px`;
+            box1.style.left= `${box.left}%`;
+            box1.style.top= `${box.top}%`;
          } else if(box.id==2){
-            box2.style.left= `${box.left}px`;
-            box2.style.top= `${box.top}px`;
+            box2.style.left= `${box.left}%`;
+            box2.style.top= `${box.top}%`;
          }
     }); 
 

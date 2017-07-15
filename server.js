@@ -22,7 +22,7 @@ function box(top,left,id){
     this.id=id
 }
 var player1 = new box(0,0,1);
-var player2 = new box(0,0,2);
+var player2 = new box(96,0,2);
 var players = [player1,player2]
 io.on('connection', (socket) =>{
     if(playerCount<2){
@@ -34,42 +34,48 @@ io.on('connection', (socket) =>{
         socket.on('move',(data)=>{
             //    console.log(data.key, data.id);
             if(data.id==1){       
-                if(data.key==39){
-                    player1.left+=100;
+                if(data.key==39 && player1.left<98){
+                    player1.left+=2;
                     console.log(player1.left);
                     console.log(player2.left);
                     io.sockets.emit('render',player1);
                     io.sockets.emit('render',player2);
-                } else if(data.key==37){
-                    player1.left-=100;
+                } else if(data.key==37 && player1.left>0){
+                    console.log(player1.left);
+                    console.log(player2.left);
+                    player1.left-=2;
                     io.sockets.emit('render',player1);
                     io.sockets.emit('render',player2);
-                } else if(data.key==38){
-                    player1.top-=100;
+                } else if(data.key==38&&player1.top>0){
+                    console.log(player1.top);
+                    console.log(player2.top);
+                    player1.top-=4;
                     io.sockets.emit('render',player1);
                     io.sockets.emit('render',player2);
-                } else if(data.key==40){
-                    player1.top+=100;
+                } else if(data.key==40&&player1.top<96){
+                    player1.top+=4;
+                    console.log(player1.top);
+                    console.log(player2.top);
                     io.sockets.emit('render',player1);
                     io.sockets.emit('render',player2);
                 }
             } else if(data.id==2){       
-                if(data.key==39){
-                    player2.left+=100;
-                                        console.log(player1.left);
+                if(data.key==39&&player2.left<98){
+                    player2.left+=2;
+                    console.log(player1.left);
                     console.log(player2.left);
                     io.sockets.emit('render',player2);
                     io.sockets.emit('render',player1);
-                } else if(data.key==37){
-                    player2.left-=100;
+                } else if(data.key==37&& player2.left>0){
+                    player2.left-=2;
                     io.sockets.emit('render',player2);
                     io.sockets.emit('render',player1);
-                } else if(data.key==38){
-                    player2.top-=100;
+                } else if(data.key==38&& player2.top>0){
+                    player2.top-=4;
                     io.sockets.emit('render',player2);
                     io.sockets.emit('render',player1);
-                } else if(data.key==40){
-                    player2.top+=100;
+                } else if(data.key==40 && player2.top<96){
+                    player2.top+=4;
                     io.sockets.emit('render',player2);
                     io.sockets.emit('render',player1);
                 }
