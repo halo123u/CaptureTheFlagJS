@@ -11,7 +11,7 @@ var box2 = document.querySelector('#box2');
 socket.on('connect', function(){
     console.log('connected to server');
     socket.on('setID',function(data){
-        console.log('user is setup');
+        console.log('user ID is setup');
         ID=data;
     });
      $(document).ready(function(){

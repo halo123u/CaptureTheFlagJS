@@ -25,12 +25,12 @@ var player1 = new box(0,0,1);
 var player2 = new box(96,98,2);
 var players = [player1,player2]
 io.on('connection', (socket) =>{
+    socket.emit('init', {top1:player1.top,top2:player2.top,left1:player1.left, 
+            left2:player2.left});
     if(playerCount<2){
         console.log('client connected');
         socket.emit('setID',players[playerCount].id);
         playerCount++;
-        socket.emit('init', {top1:player1.top,top2:player2.top,left1:player1.left, 
-            left2:player2.left});
 
         socket.on('move',(data)=>{
             //    console.log(data.key, data.id);
