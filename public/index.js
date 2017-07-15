@@ -4,25 +4,26 @@ var $container = $('<div>').addClass('container');
     $body.append($container);
     $container.append($('<div>').addClass('box').attr('id', 'box1').css('background', 'blue'));
     $container.append($('<div>').addClass('box').attr('id', 'box2').css('background', 'red'));
-    var box1 = document.querySelector('#box1');
+
+var box1 = document.querySelector('#box1');
+var box2 = document.querySelector('#box2');
     var ID = null;
 socket.on('connect', function(){
     console.log('connected to server');
-    socket.on('setID',(data) =>{
-        console.log(data);
+    socket.on('setID',function(data){
+        console.log('user is setup');
         ID=data;
     });
-    // $(document).ready(function(){
-    socket.on('user',function(box){
+     $(document).ready(function(){
+    socket.on('init',function(players){
+        console.log('initial users setup')
 
-        if(box.id==1){
-            box1.style.left= `${box.left}%`;
-            box1.style.top= `${box.top}%`;
-        } else if(box.id==2){
-            box2.style.left= `${box.left}%`;
-            box2.style.top= `${box.top}%`;
-        }
-    // });
+            box1.style.left= `${players.left1}%`;
+            box1.style.top= `${players.top1}%`;
+        
+            box2.style.left= `${players.left2}%`;
+            box2.style.top= `${players.top2}%`;
+     });
     socket.on('render',function(box){
          if(box.id==1){
             box1.style.left= `${box.left}%`;

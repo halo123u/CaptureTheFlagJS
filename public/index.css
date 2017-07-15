@@ -8,14 +8,14 @@ width: 99.5vw;
 position: relative;
 border: 5px solid black;
 }
+ #box2{
+     position: absolute;
+    /* top:96%;
+    left:98%; */
+}
 .box{
     width: 2%;
     height: 4%;
-      position: absolute;  
-    /* left:0; */
-      transition: 1000ms;  
-}
-#box2{
-    top:96%;
-    left:0%;
-}
+    position: absolute;   
+    transition: 1000ms;  
+} 
