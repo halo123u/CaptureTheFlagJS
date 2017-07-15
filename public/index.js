@@ -14,36 +14,24 @@ socket.on('connect', function(){
     });
     $(document).ready(function(){
     socket.on('user',function(box){
-        console.log(box);
-        if(ID==1){
+
+        if(box.id==1){
             box1.style.left= `${box.left}px`;
             box1.style.top= `${box.top}px`;
-        } else if(ID==2){
+        } else if(box.id==2){
             box2.style.left= `${box.left}px`;
             box2.style.top= `${box.top}px`;
         }
     });
     socket.on('render',function(box){
-        if(ID==1){
+         if(box.id==1){
             box1.style.left= `${box.left}px`;
             box1.style.top= `${box.top}px`;
-        } else if(ID==2){
+         } else if(box.id==2){
             box2.style.left= `${box.left}px`;
             box2.style.top= `${box.top}px`;
-        }
-    });
-    // } else if(){
-    //     socket.on('user',function(box){
-    //     console.log(box);
-    //     box2.style.left= `${box.left}px`;
-    //     box2.style.top= `${box.top}px`;
-    // });
-    // socket.on('render',function(box){
-    //     box2.style.left= `${box.left}px`;
-    //     box2.style.top= `${box.top}px`;
-    // });
-
-    // }
+         }
+    }); 
 
 });
 });

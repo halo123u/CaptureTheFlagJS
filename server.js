@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
     res.sendFile('index.html');
 });
 
-var playerCount = 2;
+var playerCount = 0;
 function box(top,left,id){
     this.top=top,
     this.left=left,
@@ -25,45 +25,66 @@ var player1 = new box(0,0,1);
 var player2 = new box(0,0,2);
 var players = [player1,player2]
 io.on('connection', (socket) =>{
-    if(playerCount>0){
+    if(playerCount<2){
         console.log('client connected');
-        socket.emit('setID',player1.id);
+        socket.emit('setID',players[playerCount].id);
+        playerCount++;
         socket.emit('user', {top:player1.top, left:player1.left});
+        socket.emit('user', {top:player2.top, left:player2.left});
         socket.on('move',(data)=>{
             //    console.log(data.key, data.id);
             if(data.id==1){       
                 if(data.key==39){
                     player1.left+=100;
+                    console.log(player1.left);
+                    console.log(player2.left);
                     io.sockets.emit('render',player1);
+                    io.sockets.emit('render',player2);
                 } else if(data.key==37){
                     player1.left-=100;
                     io.sockets.emit('render',player1);
+                    io.sockets.emit('render',player2);
                 } else if(data.key==38){
                     player1.top-=100;
                     io.sockets.emit('render',player1);
+                    io.sockets.emit('render',player2);
                 } else if(data.key==40){
                     player1.top+=100;
                     io.sockets.emit('render',player1);
+                    io.sockets.emit('render',player2);
                 }
             } else if(data.id==2){       
                 if(data.key==39){
                     player2.left+=100;
+                                        console.log(player1.left);
+                    console.log(player2.left);
                     io.sockets.emit('render',player2);
+                    io.sockets.emit('render',player1);
                 } else if(data.key==37){
                     player2.left-=100;
                     io.sockets.emit('render',player2);
+                    io.sockets.emit('render',player1);
                 } else if(data.key==38){
                     player2.top-=100;
                     io.sockets.emit('render',player2);
+                    io.sockets.emit('render',player1);
                 } else if(data.key==40){
                     player2.top+=100;
                     io.sockets.emit('render',player2);
+                    io.sockets.emit('render',player1);
                 }
             }   
         });
-        socket.on('disconnect', ()=>{
-        playerCount++;
+    }
+    socket.on('disconnect', ()=>{
+        playerCount--;
+        if(playerCount<=0){
+            player1.left=0
+            player1.top=0
+            player2.left=0
+            player2.top=0 
+            playerCount=0;           
+        }
         console.log(playerCount);
         });
-    }
 });
