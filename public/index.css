@@ -14,8 +14,13 @@ border: 5px solid black;
     left:98%; */
 }
 .box{
-    width: 2%;
-    height: 4%;
+    width: 3%;
+    height: 5%;
     position: absolute;   
     transition: 1000ms;  
+}
+.point{
+    height:1%;
+    width: .5%;
+    position: absolute;
 } 
