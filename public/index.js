@@ -1,11 +1,15 @@
 var socket = io();
 var $body = $('body');
 var $container = $('<div>').addClass('container');
+var $scoreBoard = $('<div>').addClass('score').attr('id','score1');
+var $scoreBoard2 = $('<div>').addClass('score').attr('id','score2');
 var $pointBox = $('<div>').addClass('point');
     $body.append($container);
     $container.append($('<div>').addClass('box').attr('id', 'box1').css('background', 'blue'));
     $container.append($('<div>').addClass('box').attr('id', 'box2').css('background', 'red'));
     $container.append($pointBox.css('background', 'black'));
+    $container.append($scoreBoard);
+    $container.append($scoreBoard2);
 var box1 = document.querySelector('#box1');
 var box2 = document.querySelector('#box2');
 var point = document.querySelector('.point');
@@ -27,6 +31,8 @@ socket.on('connect', function(){
             box2.style.top= `${players.top2}%`;
             point.style.left = `${players.pLeft}%`;
             point.style.top = `${players.pTop}%`;
+            $scoreBoard.text(`${players.p1s}`);
+            $scoreBoard2.text(`${players.p2s}`);
      });
     socket.on('render',function(box){
          if(box.id==1){
@@ -42,6 +48,9 @@ socket.on('connect', function(){
         console.log(point.style.left, point.style.top);
         point.style.left= `${data.pl}%`;
         point.style.top= `${data.pt}%`;
+        $scoreBoard.text(`${data.p1s}`);
+        $scoreBoard2.text(`${data.p2s}`);
+
     }) 
 
 });
