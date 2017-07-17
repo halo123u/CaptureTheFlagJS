@@ -21,7 +21,7 @@ border: 5px solid black;
     height: 5%;
     position: absolute;
     z-index: 9;   
-    transition: 1000ms;  
+    transition: 300ms;  
 }
 #score1{
     position: absolute;

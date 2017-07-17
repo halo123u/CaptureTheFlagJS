@@ -1,4 +1,6 @@
 var socket = io();
+
+//Initialize DOM structure of the game 
 var $body = $('body');
 var $container = $('<div>').addClass('container');
 var $scoreBoard = $('<div>').addClass('score').attr('id','score1');
@@ -17,79 +19,91 @@ var $pointBox = $('<div>').addClass('point');
     $container.append($scoreBoard3);
     $container.append($scoreBoard4);
 
+//grab values to modify later in the game
 var box1 = document.querySelector('#box1');
 var box2 = document.querySelector('#box2');
 var box3 = document.querySelector('#box3');
 var box4 = document.querySelector('#box4');
 var point = document.querySelector('.point');
+//set id to null
 var ID = null;
 
 socket.on('connect', function(){
     console.log('connected to server');
-    socket.on('setID',function(data){
-        console.log('user ID is setup');
-        ID=data;
-        console.log(ID);
+    //obtain unique ID from the server
+    socket.on('setID',function(id){
+        ID=id;
     });
+    if(ID){
+        console.log(`player${id} connected`);
+    } else{
+        console.log('you are spectating a game');
+    }
+
+    //Initialize player values on page load
      $(document).ready(function(){
-    socket.on('init',function(players){
-        console.log('initial users setup')
+        socket.on('init',function(players){
 
-            box1.style.left= `${players.left1}%`;
-            box1.style.top= `${players.top1}%`;
-        
-            box2.style.left= `${players.left2}%`;
-            box2.style.top= `${players.top2}%`;
+                box1.style.left= `${players.left1}%`;
+                box1.style.top= `${players.top1}%`;
             
-            box3.style.left= `${players.left3}%`;
-            box3.style.top= `${players.top3}%`;
-            
-            box4.style.left= `${players.left4}%`;
-            box4.style.top= `${players.top4}%`;
+                box2.style.left= `${players.left2}%`;
+                box2.style.top= `${players.top2}%`;
+                
+                box3.style.left= `${players.left3}%`;
+                box3.style.top= `${players.top3}%`;
+                
+                box4.style.left= `${players.left4}%`;
+                box4.style.top= `${players.top4}%`;
 
-            point.style.left = `${players.pLeft}%`;
-            point.style.top = `${players.pTop}%`;
+                point.style.left = `${players.pLeft}%`;
+                point.style.top = `${players.pTop}%`;
 
-            $scoreBoard.text(`${players.p1s}`);
-            $scoreBoard2.text(`${players.p2s}`);
-            $scoreBoard3.text(`${players.p3s}`);
-            $scoreBoard4.text(`${players.p4s}`);
-     });
-    socket.on('render',function(box){
-         if(box.id==1){
-            box1.style.left= `${box.left}%`;
-            box1.style.top= `${box.top}%`;
-         } else if(box.id==2){
-            box2.style.left= `${box.left}%`;
-            box2.style.top= `${box.top}%`;
-         } else if(box.id==3){
-            box3.style.left= `${box.left}%`;
-            box3.style.top= `${box.top}%`;
-         } else if(box.id ==4){
-            box4.style.left= `${box.left}%`;
-            box4.style.top= `${box.top}%`;
-         }
-    });
-    socket.on('P',function(data){
-        point.style.left= `${data.pl}%`;
-        point.style.top= `${data.pt}%`;
-        $scoreBoard.text(`${data.p1s}`);
-        $scoreBoard2.text(`${data.p2s}`);
-        $scoreBoard3.text(`${data.p3s}`);
-        $scoreBoard4.text(`${data.p4s}`)
-
-
-    });
-    socket.on('winner', function(color){
-        if(ID!==null){
-            if(confirm(`${color} player won!!!!`)){
-            socket.emit('reset');
+                $scoreBoard.text(`${players.p1s}`);
+                $scoreBoard2.text(`${players.p2s}`);
+                $scoreBoard3.text(`${players.p3s}`);
+                $scoreBoard4.text(`${players.p4s}`);
+        });
+            //update player values on render event
+        socket.on('render',function(box){
+            if(box.id==1){
+                box1.style.left= `${box.left}%`;
+                box1.style.top= `${box.top}%`;
+            } else if(box.id==2){
+                box2.style.left= `${box.left}%`;
+                box2.style.top= `${box.top}%`;
+            } else if(box.id==3){
+                box3.style.left= `${box.left}%`;
+                box3.style.top= `${box.top}%`;
+            } else if(box.id ==4){
+                box4.style.left= `${box.left}%`;
+                box4.style.top= `${box.top}%`;
             }
-        }
-    }); 
+        });
+        //update scoring and randomize position of point box on score
+        socket.on('P',function(data){
+            point.style.left= `${data.pl}%`;
+            point.style.top= `${data.pt}%`;
+            $scoreBoard.text(`${data.p1s}`);
+            $scoreBoard2.text(`${data.p2s}`);
+            $scoreBoard3.text(`${data.p3s}`);
+            $scoreBoard4.text(`${data.p4s}`)
 
+
+        });
+
+        //declare winner on current player clients and not spectators
+        socket.on('winner', function(color){
+            if(ID!==null){
+                if(confirm(`${color} player won!!!!`)){
+                socket.emit('reset');
+                }
+            }
+        }); 
+    });
 });
-});
+
+    //Listen for keydown event to emit move event 
     window.addEventListener('keydown',function(e){
         console.log(ID);
         if(e.keyCode ==39){
