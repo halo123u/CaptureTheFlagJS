@@ -52,6 +52,16 @@ border: 5px solid black;
     align-items: center;
     top:0%;
 }
+#score4{
+    position: absolute;
+    z-index: 10;
+    left: 0%;
+    display: flex;
+     color: orange; 
+    justify-content: center;
+    align-items: center;
+    top:94%;
+}
 .point{
     height:1%;
     width: .5%;
