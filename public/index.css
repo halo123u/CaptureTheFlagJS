@@ -8,27 +8,53 @@ width: 99.5vw;
 position: relative;
 border: 5px solid black;
 }
- #box2{
-     position: absolute;
-    /* top:96%;
-    left:98%; */
-}
+ 
 .score {
     height:5%;
     width: 3%;
-    z-index: 20;
-    background: rgba(0, 0, 0, .7);
+    background: rgba(0, 0, 0, .1);
     color: whitesmoke;
     font-size: 30px;;
 }
 .box{
     width: 3%;
     height: 5%;
-    position: absolute;   
+    position: absolute;
+    z-index: 9;   
     transition: 1000ms;  
+}
+#score1{
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    color: blue;
+    justify-content: center;
+    align-items: center;
+
+}
+#score2{
+    position: absolute;
+    z-index: 10;
+    left: 96%;
+    display: flex;
+    color: red;
+    justify-content: center;
+    align-items: center;
+    top:94%;
+}
+#score3{
+    position: absolute;
+    z-index: 10;
+    left: 96%;
+    display: flex;
+     color: green; 
+    justify-content: center;
+    align-items: center;
+    top:0%;
 }
 .point{
     height:1%;
     width: .5%;
+    border-radius: 50%;
     position: absolute;
 } 

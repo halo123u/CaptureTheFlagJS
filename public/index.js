@@ -3,22 +3,29 @@ var $body = $('body');
 var $container = $('<div>').addClass('container');
 var $scoreBoard = $('<div>').addClass('score').attr('id','score1');
 var $scoreBoard2 = $('<div>').addClass('score').attr('id','score2');
+var $scoreBoard3 = $('<div>').addClass('score').attr('id','score3');
 var $pointBox = $('<div>').addClass('point');
     $body.append($container);
     $container.append($('<div>').addClass('box').attr('id', 'box1').css('background', 'blue'));
     $container.append($('<div>').addClass('box').attr('id', 'box2').css('background', 'red'));
+    $container.append($('<div>').addClass('box').attr('id', 'box3').css('background', 'green'));
     $container.append($pointBox.css('background', 'black'));
     $container.append($scoreBoard);
     $container.append($scoreBoard2);
+    $container.append($scoreBoard3);
+
 var box1 = document.querySelector('#box1');
 var box2 = document.querySelector('#box2');
+var box3 = document.querySelector('#box3');
 var point = document.querySelector('.point');
-    var ID = null;
+var ID = null;
+
 socket.on('connect', function(){
     console.log('connected to server');
     socket.on('setID',function(data){
         console.log('user ID is setup');
         ID=data;
+        console.log(ID);
     });
      $(document).ready(function(){
     socket.on('init',function(players){
@@ -29,10 +36,16 @@ socket.on('connect', function(){
         
             box2.style.left= `${players.left2}%`;
             box2.style.top= `${players.top2}%`;
+            
+            box3.style.left= `${players.left3}%`;
+            box3.style.top= `${players.top3}%`;
+
             point.style.left = `${players.pLeft}%`;
             point.style.top = `${players.pTop}%`;
+
             $scoreBoard.text(`${players.p1s}`);
             $scoreBoard2.text(`${players.p2s}`);
+            $scoreBoard3.text(`${players.p3s}`);
      });
     socket.on('render',function(box){
          if(box.id==1){
@@ -41,23 +54,25 @@ socket.on('connect', function(){
          } else if(box.id==2){
             box2.style.left= `${box.left}%`;
             box2.style.top= `${box.top}%`;
+         } else if(box.id==3){
+            box3.style.left= `${box.left}%`;
+            box3.style.top= `${box.top}%`;
          }
     });
     socket.on('P',(data)=>{
-        console.log(data.pl, data.pt);
-        console.log(point.style.left, point.style.top);
         point.style.left= `${data.pl}%`;
         point.style.top= `${data.pt}%`;
         $scoreBoard.text(`${data.p1s}`);
         $scoreBoard2.text(`${data.p2s}`);
+        $scoreBoard3.text(`${data.p3s}`);
+
 
     }) 
 
 });
 });
     window.addEventListener('keydown',function(e){
-        console.log(e.keyCode)
-        // if(ID==1){
+        console.log(ID);
         if(e.keyCode ==39){
             socket.emit('move', {key:39, id:ID});
         } else if(e.keyCode ==37){
@@ -67,5 +82,4 @@ socket.on('connect', function(){
         } else if(e.keyCode == 40){
             socket.emit('move',{key:40, id:ID});
         }
-        // }
     });
