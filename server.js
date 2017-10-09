@@ -9,7 +9,9 @@ var port = process.env.PORT || 3000;
 
 const publicPath  = path.join(__dirname,'/public');
 app.use(express.static(publicPath));
-server.listen(port);
+server.listen(port,()=>{
+    console.log(`server is running on ${port}`);
+});
 
 //Box Constructor for game objects
 function Box(top,left,score,id, color){
@@ -33,9 +35,9 @@ var playerCount = 0;
 var playerid = 0;
 //Player object initialization
 var player1 = new Box(0,0,0,1,'Blue');
-var player2 = new Box(94,96,0,2,'Red');
-var player3 = new Box(0,96,0,3, 'Green');
-var player4 = new Box(94,0,0,4,'Orange');
+var player2 = new Box(95,97,0,2,'Red');
+var player3 = new Box(0,97,0,3, 'Green');
+var player4 = new Box(95,0,0,4,'Orange');
 //Point object initialization
 //Must be random to start at random position
 var point = new Box((Math.random()*96),(Math.random()*96), -1);
@@ -52,7 +54,7 @@ app.get('/', (req, res) => {
 var movebox = function(id,key){
         switch(key){
             case 39:
-                if(players[id].left<96){ 
+                if(players[id].left<97){ 
                 players[id].left += 2.1;
                 //update the position on all clients by emmiting render
                 io.sockets.emit('render',players[id]);
@@ -71,7 +73,7 @@ var movebox = function(id,key){
                 }
                 break;
             case 40:
-                if(players[id].top<94){ 
+                if(players[id].top<95){ 
                 players[id].top += 4.1;
                 io.sockets.emit('render',players[id]);
                 }
@@ -85,8 +87,8 @@ var collDet = (id) => {
     if((players[id].left<= point.left) && (players[id].left+3) >= point.left
              && (players[id].top<= point.top && (players[id].top+5) >= point.top)){
                     players[id].score++;
-                    point.left = (Math.random()*96);
-                    point.top = (Math.random()*96);
+                    point.left = (Math.random()*97);
+                    point.top = (Math.random()*97);
                     players[id].getScore();
                     //send client 
                     io.sockets.emit('P',{pl:point.left,pt:point.top, p1s:player1.score , p2s:player2.score, p3s:player3.score , p4s:player4.score});                
@@ -104,16 +106,16 @@ io.on('connection', (socket) =>{
     player1.top=0;
     player1.score=0;
     //Player2 
-    player2.left=96;
-    player2.top=94; 
+    player2.left=97;
+    player2.top=95; 
     player2.score= 0;
     //Player3
-    player3.left=96;
+    player3.left=97;
     player3.top=0;
     player3.score =0;
     //Player 4
     player4.left=0;
-    player4.top=94;
+    player4.top=95;
     player4.score =0;
     }
 
