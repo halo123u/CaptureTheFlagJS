@@ -10,6 +10,13 @@ var movePlayer = function(player){
     box.style.left = `${player.left}%`;
 }
 
+var updateScore = function(data){
+    point.style.left= `${data.pl}%`;
+    point.style.top= `${data.pt}%`;
+    players.forEach(function(player, i){
+        player.score.text(`${data[`p${i+1}s`]}`);
+    });
+}
 //Initialize DOM structure of the game 
 var $body = $('body');
 var $container = $('<div>').addClass('container');
@@ -30,10 +37,6 @@ var $pointBox = $('<div>').addClass('point');
         console.log(players);
 
     $container.append($pointBox.css('background', 'black'));
-    // $container.append($scoreBoard);
-    // $container.append($scoreBoard2);
-    // $container.append($scoreBoard3);
-    // $container.append($scoreBoard4);
 
  var   point = document.querySelector('.point');
 //set id to null
@@ -54,7 +57,6 @@ socket.on('connect', function(){
     //Initialize player values on page load
      $(document).ready(function(){
         socket.on('init',function(initPlayers){
-            console.log(players);
             for(let i =0; i < 4; i++){
                 let box = players[i].box[0];
                 players[i].score.text(`${initPlayers.p1s}`);
@@ -64,27 +66,16 @@ socket.on('connect', function(){
 
                 point.style.left = `${initPlayers.pLeft}%`;
                 point.style.top = `${initPlayers.pTop}%`;
-
-                // $scoreBoard.text(`${players.p1s}`);
-                // $scoreBoard2.text(`${players.p2s}`);
-                // $scoreBoard3.text(`${players.p3s}`);
-                // $scoreBoard4.text(`${players.p4s}`);
         });
 
         //update player values on render event
         socket.on('render',function(box){
           movePlayer(box)
         });
+        
         //update scoring and randomize position of point box on score
         socket.on('P',function(data){
-            point.style.left= `${data.pl}%`;
-            point.style.top= `${data.pt}%`;
-            $scoreBoard.text(`${data.p1s}`);
-            $scoreBoard2.text(`${data.p2s}`);
-            $scoreBoard3.text(`${data.p3s}`);
-            $scoreBoard4.text(`${data.p4s}`)
-
-
+            updateScore(data);
         });
 
         //declare winner on current player clients and not spectators
