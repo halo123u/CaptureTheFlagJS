@@ -59,8 +59,8 @@ socket.on('connect', function(){
                 box[0].style.top = `${initPlayers[`top${(i+1)}`]}%`;
             }
 
-                point.style.left = `${players.pLeft}%`;
-                point.style.top = `${players.pTop}%`;
+                point.style.left = `${initPlayers.pLeft}%`;
+                point.style.top = `${initPlayers.pTop}%`;
 
                 $scoreBoard.text(`${players.p1s}`);
                 $scoreBoard2.text(`${players.p2s}`);
