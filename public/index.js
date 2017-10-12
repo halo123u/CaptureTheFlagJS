@@ -1,5 +1,8 @@
 var socket = io();
 
+var players = [],
+    colors = ['blue', 'red', 'green', 'orange'];
+
 //Initialize DOM structure of the game 
 var $body = $('body');
 var $container = $('<div>').addClass('container'),
@@ -11,22 +14,19 @@ var $container = $('<div>').addClass('container'),
 var $pointBox = $('<div>').addClass('point');
 
     $body.append($container);
-    $container.append($('<div>').addClass('box').attr('id', 'box1').css('background', 'blue'));
-    $container.append($('<div>').addClass('box').attr('id', 'box2').css('background', 'red'));
-    $container.append($('<div>').addClass('box').attr('id', 'box3').css('background', 'green'));
-    $container.append($('<div>').addClass('box').attr('id', 'box4').css('background', 'orange'));
+    for(let i =0 ; i<4; i++){
+        let box =$('<div>').addClass('box').attr('id', `box${i}`).css('background', `${colors[i]}`);
+            $container.append(box);                 
+            players.push(box);
+    }
+
     $container.append($pointBox.css('background', 'black'));
     $container.append($scoreBoard);
     $container.append($scoreBoard2);
     $container.append($scoreBoard3);
     $container.append($scoreBoard4);
 
-//grab values to modify later in the game
-var box1 = document.querySelector('#box1');
-    box2 = document.querySelector('#box2'),
-    box3 = document.querySelector('#box3'),
-    box4 = document.querySelector('#box4'),
-    point = document.querySelector('.point'),
+ var   point = document.querySelector('.point');
 //set id to null
     ID = null;
 
@@ -44,19 +44,13 @@ socket.on('connect', function(){
 
     //Initialize player values on page load
      $(document).ready(function(){
-        socket.on('init',function(players){
-
-                box1.style.left= `${players.left1}%`;
-                box1.style.top= `${players.top1}%`;
-            
-                box2.style.left= `${players.left2}%`;
-                box2.style.top= `${players.top2}%`;
-                
-                box3.style.left= `${players.left3}%`;
-                box3.style.top= `${players.top3}%`;
-                
-                box4.style.left= `${players.left4}%`;
-                box4.style.top= `${players.top4}%`;
+        socket.on('init',function(initPlayers){
+            console.log(players);
+            for(let i =0; i < 4; i++){
+                let box = players[i];
+                box[0].style.left = `${initPlayers[`left${(i+1)}`]}%`;
+                box[0].style.top = `${initPlayers[`top${(i+1)}`]}%`;
+            }
 
                 point.style.left = `${players.pLeft}%`;
                 point.style.top = `${players.pTop}%`;
@@ -66,7 +60,8 @@ socket.on('connect', function(){
                 $scoreBoard3.text(`${players.p3s}`);
                 $scoreBoard4.text(`${players.p4s}`);
         });
-            //update player values on render event
+
+        //update player values on render event
         socket.on('render',function(box){
             switch(box.id){
                 case 1: 
@@ -87,18 +82,6 @@ socket.on('connect', function(){
                     break;
                 
             }
-            // if(box.id==1){
-
-            // } else if(box.id==2){
-            //     box2.style.left= `${box.left}%`;
-            //     box2.style.top= `${box.top}%`;
-            // } else if(box.id==3){
-            //     box3.style.left= `${box.left}%`;
-            //     box3.style.top= `${box.top}%`;
-            // } else if(box.id ==4){
-            //     box4.style.left= `${box.left}%`;
-            //     box4.style.top= `${box.top}%`;
-            // }
         });
         //update scoring and randomize position of point box on score
         socket.on('P',function(data){
