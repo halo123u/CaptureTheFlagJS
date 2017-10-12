@@ -5,33 +5,35 @@ var players = [],
 
 var movePlayer = function(player){
  console.log(player);
-    let box = players[player.id-1];
-    box[0].style.top = `${player.top}%`;
-    box[0].style.left = `${player.left}%`;
+    let box = players[player.id-1].box[0];
+    box.style.top = `${player.top}%`;
+    box.style.left = `${player.left}%`;
 }
 
 //Initialize DOM structure of the game 
 var $body = $('body');
-var $container = $('<div>').addClass('container'),
-    $scoreBoard = $('<div>').addClass('score').attr('id','score1'),
-    $scoreBoard2 = $('<div>').addClass('score').attr('id','score2'),
-    $scoreBoard3 = $('<div>').addClass('score').attr('id','score3'),
-    $scoreBoard4 = $('<div>').addClass('score').attr('id','score4');
+var $container = $('<div>').addClass('container');
 
 var $pointBox = $('<div>').addClass('point');
 
     $body.append($container);
     for(let i =0 ; i<4; i++){
-        let box =$('<div>').addClass('box').attr('id', `box${i}`).css('background', `${colors[i]}`);
+        let box = $('<div>').addClass('box').attr('id', `box${i}`).css('background', `${colors[i]}`);
+        let score =  $('<div>').addClass('score').attr('id',`score${i+1}`);
+            $container.append(score);
             $container.append(box);                 
-            players.push(box);
+            players.push({
+                box,
+                score
+            });
     }
+        console.log(players);
 
     $container.append($pointBox.css('background', 'black'));
-    $container.append($scoreBoard);
-    $container.append($scoreBoard2);
-    $container.append($scoreBoard3);
-    $container.append($scoreBoard4);
+    // $container.append($scoreBoard);
+    // $container.append($scoreBoard2);
+    // $container.append($scoreBoard3);
+    // $container.append($scoreBoard4);
 
  var   point = document.querySelector('.point');
 //set id to null
@@ -54,18 +56,19 @@ socket.on('connect', function(){
         socket.on('init',function(initPlayers){
             console.log(players);
             for(let i =0; i < 4; i++){
-                let box = players[i];
-                box[0].style.left = `${initPlayers[`left${(i+1)}`]}%`;
-                box[0].style.top = `${initPlayers[`top${(i+1)}`]}%`;
+                let box = players[i].box[0];
+                players[i].score.text(`${initPlayers.p1s}`);
+                box.style.left = `${initPlayers[`left${(i+1)}`]}%`;
+                box.style.top = `${initPlayers[`top${(i+1)}`]}%`;
             }
 
                 point.style.left = `${initPlayers.pLeft}%`;
                 point.style.top = `${initPlayers.pTop}%`;
 
-                $scoreBoard.text(`${players.p1s}`);
-                $scoreBoard2.text(`${players.p2s}`);
-                $scoreBoard3.text(`${players.p3s}`);
-                $scoreBoard4.text(`${players.p4s}`);
+                // $scoreBoard.text(`${players.p1s}`);
+                // $scoreBoard2.text(`${players.p2s}`);
+                // $scoreBoard3.text(`${players.p3s}`);
+                // $scoreBoard4.text(`${players.p4s}`);
         });
 
         //update player values on render event
