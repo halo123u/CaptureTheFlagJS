@@ -3,13 +3,13 @@ var socket = io();
 var players = [],
     colors = ['blue', 'red', 'green', 'orange'];
 
+//Moves players
 var movePlayer = function(player){
- console.log(player);
     let box = players[player.id-1].box[0];
     box.style.top = `${player.top}%`;
     box.style.left = `${player.left}%`;
 }
-
+//Updates Score and randomizes location of scoring dot
 var updateScore = function(data){
     point.style.left= `${data.pl}%`;
     point.style.top= `${data.pt}%`;
@@ -72,7 +72,7 @@ socket.on('connect', function(){
         socket.on('render',function(box){
           movePlayer(box)
         });
-        
+
         //update scoring and randomize position of point box on score
         socket.on('P',function(data){
             updateScore(data);
