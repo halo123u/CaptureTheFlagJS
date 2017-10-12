@@ -3,6 +3,13 @@ var socket = io();
 var players = [],
     colors = ['blue', 'red', 'green', 'orange'];
 
+var movePlayer = function(player){
+ console.log(player);
+    let box = players[player.id-1];
+    box[0].style.top = `${player.top}%`;
+    box[0].style.left = `${player.left}%`;
+}
+
 //Initialize DOM structure of the game 
 var $body = $('body');
 var $container = $('<div>').addClass('container'),
@@ -63,25 +70,7 @@ socket.on('connect', function(){
 
         //update player values on render event
         socket.on('render',function(box){
-            switch(box.id){
-                case 1: 
-                    box1.style.left= `${box.left}%`;
-                    box1.style.top= `${box.top}%`;
-                    break;
-                case 2: 
-                    box2.style.left= `${box.left}%`;
-                    box2.style.top= `${box.top}%`;
-                    break;
-                case 3: 
-                    box3.style.left= `${box.left}%`;
-                    box3.style.top= `${box.top}%`;
-                    break;
-                case 4: 
-                    box4.style.left= `${box.left}%`;
-                    box4.style.top= `${box.top}%`;
-                    break;
-                
-            }
+          movePlayer(box)
         });
         //update scoring and randomize position of point box on score
         socket.on('P',function(data){
