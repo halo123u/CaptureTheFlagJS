@@ -2,12 +2,14 @@ var socket = io();
 
 //Initialize DOM structure of the game 
 var $body = $('body');
-var $container = $('<div>').addClass('container');
-var $scoreBoard = $('<div>').addClass('score').attr('id','score1');
-var $scoreBoard2 = $('<div>').addClass('score').attr('id','score2');
-var $scoreBoard3 = $('<div>').addClass('score').attr('id','score3');
-var $scoreBoard4 = $('<div>').addClass('score').attr('id','score4');
+var $container = $('<div>').addClass('container'),
+    $scoreBoard = $('<div>').addClass('score').attr('id','score1'),
+    $scoreBoard2 = $('<div>').addClass('score').attr('id','score2'),
+    $scoreBoard3 = $('<div>').addClass('score').attr('id','score3'),
+    $scoreBoard4 = $('<div>').addClass('score').attr('id','score4');
+
 var $pointBox = $('<div>').addClass('point');
+
     $body.append($container);
     $container.append($('<div>').addClass('box').attr('id', 'box1').css('background', 'blue'));
     $container.append($('<div>').addClass('box').attr('id', 'box2').css('background', 'red'));
@@ -21,12 +23,12 @@ var $pointBox = $('<div>').addClass('point');
 
 //grab values to modify later in the game
 var box1 = document.querySelector('#box1');
-var box2 = document.querySelector('#box2');
-var box3 = document.querySelector('#box3');
-var box4 = document.querySelector('#box4');
-var point = document.querySelector('.point');
+    box2 = document.querySelector('#box2'),
+    box3 = document.querySelector('#box3'),
+    box4 = document.querySelector('#box4'),
+    point = document.querySelector('.point'),
 //set id to null
-var ID = null;
+    ID = null;
 
 socket.on('connect', function(){
     console.log('connected to server');
